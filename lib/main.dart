@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_card/api_module/api_screen.dart';
 import 'package:flutter_card/counter_logic.dart';
+import 'package:flutter_card/event_module/event_provider.dart';
 import 'package:flutter_card/language_logic.dart';
-import 'package:flutter_card/login_screen.dart';
-import 'package:flutter_card/main_screen.dart';
 import 'package:flutter_card/simple_state.dart';
 import 'package:flutter_card/theme_logic.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-  runApp(ApiApp());
+void main(){
+  runApp(eventProvider());
 }
 
 Widget providerBasicApp(){
