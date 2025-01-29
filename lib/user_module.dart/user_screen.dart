@@ -82,13 +82,13 @@ class _UserListScreenState extends State<UserListScreen> {
                 final user = userLoUserLogic.users[index];
                 return ListTile(
                   leading: CircleAvatar(
-                    backgroundImage: NetworkImage(user.images),
+                    backgroundImage: NetworkImage(user.picture.large),
                   ),
-                  title: Text(user.title),
+                  title: Text(user.name.first),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(user.description),
+                      Text(user.email),
                     ],
                   ),
                   trailing: IconButton(

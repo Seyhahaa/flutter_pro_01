@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card/counter_logic.dart';
-import 'package:flutter_card/event_module/event_provider.dart';
 import 'package:flutter_card/language_logic.dart';
-import 'package:flutter_card/simple_state.dart';
+import 'package:flutter_card/login_module.dart/login_provider.dart';
+import 'package:flutter_card/login_screen.dart';
 import 'package:flutter_card/theme_logic.dart';
 import 'package:provider/provider.dart';
 
 void main(){
-  runApp(eventProvider());
+  runApp(loginProvider());
 }
 
 Widget providerBasicApp(){
@@ -19,44 +19,77 @@ Widget providerBasicApp(){
     child: MyApp(),
   );
 }
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
-  //const MyApp({super.key});
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
+
+  Future _readLocalData() async {
+    //await Future.delayed(const Duration(seconds: 2), () {});
+    await context.read<CounterLogic>().read();
+    await context.read<ThemesLogic>().read();
+    await context.read<LanguageLogic>().read();
+  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-  ThemeMode mode = context.watch<ThemesLogic>().mode;
+  
+    return FutureBuilder(
+      future: _readLocalData(),
+      builder: (context, snapshot) {
+        if(snapshot.hasError){
+          return const Center(
+            child: Text("Error"),
+          );
+        }
+        if(snapshot.connectionState == ConnectionState.done){
+          return BasicApp();
+        }else{
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+    }
+}
 
-  Color lightColor = Color.fromARGB(255, 226, 49, 5);
-  Color darkColor = Colors.blueGrey.shade900;
-  double size = context.watch<CounterLogic>().counter.toDouble();
+class BasicApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    ThemeMode mode = context.watch<ThemesLogic>().mode;
 
-    return  MaterialApp(
-      home: SimpleStateScreen(),
+    Color lightColor = Colors.pink;
+    Color darkColor = Colors.blueGrey.shade900;
+
+    double size = context.watch<CounterLogic>().counter.toDouble();
+
+    final myTextTheme = TextTheme(
+      bodyMedium: TextStyle(fontSize: 18 + size),
+      displayMedium: TextStyle(
+        fontSize: 20 + size,
+      ),
+      displayLarge: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 22 + size,
+      ),
+      displaySmall: TextStyle(
+        fontSize: 14 + size,
+        fontStyle: FontStyle.italic,
+      ),
+    );
+
+    return MaterialApp(
+      home: LoginScreen(),
       themeMode: mode,
       theme: ThemeData(
+        useMaterial3: true,
         brightness: Brightness.light,
-        textTheme: TextTheme(
-          bodyMedium: TextStyle(fontSize: 18 + size),
-          displayMedium: TextStyle(fontSize: 20 + size),
-          displayLarge: TextStyle(fontSize: 20 + size, fontWeight: FontWeight.bold),
-          displaySmall: TextStyle(fontSize: 16 + size, fontStyle: FontStyle.italic),
-        ),
-        appBarTheme: AppBarTheme(
-        backgroundColor: lightColor,
-        foregroundColor: Colors.white,
-        ),
-
-        drawerTheme: DrawerThemeData(
-          backgroundColor: Colors.white,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.pink,
-          )
-        ),
+        textTheme: myTextTheme,
         cardTheme: CardTheme(
           color: Colors.white,
           shape: RoundedRectangleBorder(
@@ -75,27 +108,45 @@ class MyApp extends StatelessWidget {
         inputDecorationTheme: InputDecorationTheme(
           iconColor: lightColor,
           border: InputBorder.none,
-          suffixIconColor: lightColor
-        )
-
+          suffixIconColor: lightColor,
+        ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: lightColor,
+          foregroundColor: Colors.white,
+        ),
+        drawerTheme: DrawerThemeData(
+          backgroundColor: Colors.white,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+          backgroundColor: lightColor,
+          foregroundColor: Colors.white,
+        )),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: lightColor,
+            side: BorderSide(color: lightColor),
+          ),
+        ),
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
+        textTheme: myTextTheme,
         appBarTheme: AppBarTheme(
-        backgroundColor: darkColor,
-        foregroundColor: Colors.white,
-        ),
-
-        drawerTheme: DrawerThemeData(
           backgroundColor: darkColor,
+          foregroundColor: Colors.white,
         ),
+        drawerTheme: DrawerThemeData(backgroundColor: darkColor),
         elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.pink,
-          )
-        ),
-
+            style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.grey.shade800,
+          foregroundColor: Colors.white,
+        )),
+        textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+          foregroundColor: Colors.white,
+          side: BorderSide(color: Colors.white),
+        )),
       ),
     );
   }

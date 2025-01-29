@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card/counter_logic.dart';
 import 'package:flutter_card/language_data.dart';
 import 'package:flutter_card/language_logic.dart';
-import 'package:flutter_card/main.dart';
 import 'package:flutter_card/second_state.dart';
 import 'package:flutter_card/theme_logic.dart';
 import 'package:provider/provider.dart';

@@ -1,192 +1,361 @@
+// To parse this JSON data, do
+//
+//     final userRandom = userRandomFromJson(jsonString);
 
 class UserRandom {
-    List<User> docs;
-    int totalDocs;
-    int offset;
-    int limit;
-    int totalPages;
-    int page;
-    int pagingCounter;
-    bool hasPrevPage;
-    bool hasNextPage;
-    dynamic prevPage;
-    dynamic nextPage;
+    final List<Movie> results;
+    final Info info;
 
     UserRandom({
-        required this.docs,
-        required this.totalDocs,
-        required this.offset,
-        required this.limit,
-        required this.totalPages,
-        required this.page,
-        required this.pagingCounter,
-        required this.hasPrevPage,
-        required this.hasNextPage,
-        required this.prevPage,
-        required this.nextPage,
+        required this.results,
+        required this.info,
     });
 
     factory UserRandom.fromJson(Map<String, dynamic> json) => UserRandom(
-        docs: List<User>.from(json["docs"].map((x) => User.fromJson(x))),
-        totalDocs: json["totalDocs"],
-        offset: json["offset"],
-        limit: json["limit"],
-        totalPages: json["totalPages"],
+        results: List<Movie>.from(json["results"].map((x) => Movie.fromJson(x))),
+        info: Info.fromJson(json["info"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "results": List<dynamic>.from(results.map((x) => x.toJson())),
+        "info": info.toJson(),
+    };
+}
+
+class Info {
+    final String seed;
+    final int results;
+    final int page;
+    final String version;
+
+    Info({
+        required this.seed,
+        required this.results,
+        required this.page,
+        required this.version,
+    });
+
+    factory Info.fromJson(Map<String, dynamic> json) => Info(
+        seed: json["seed"],
+        results: json["results"],
         page: json["page"],
-        pagingCounter: json["pagingCounter"],
-        hasPrevPage: json["hasPrevPage"],
-        hasNextPage: json["hasNextPage"],
-        prevPage: json["prevPage"],
-        nextPage: json["nextPage"],
+        version: json["version"],
     );
 
     Map<String, dynamic> toJson() => {
-        "docs": List<dynamic>.from(docs.map((x) => x.toJson())),
-        "totalDocs": totalDocs,
-        "offset": offset,
-        "limit": limit,
-        "totalPages": totalPages,
+        "seed": seed,
+        "results": results,
         "page": page,
-        "pagingCounter": pagingCounter,
-        "hasPrevPage": hasPrevPage,
-        "hasNextPage": hasNextPage,
-        "prevPage": prevPage,
-        "nextPage": nextPage,
+        "version": version,
     };
 }
 
-class User {
-    String id;
-    String title;
-    String address;
-    String category;
-    DateTime startdate;
-    DateTime? enddate;
-    String description;
-    String images;
-    UploadBy uploadBy;
-    DateTime createdAt;
-    DateTime updatedAt;
-    int v;
+class Movie {
+    final Gender gender;
+    final Name name;
+    final Location location;
+    final String email;
+    final Login login;
+    final Dob dob;
+    final Dob registered;
+    final String phone;
+    final String cell;
+    final Id id;
+    final Picture picture;
+    final String nat;
 
-    User({
-        required this.id,
-        required this.title,
-        required this.address,
-        required this.category,
-        required this.startdate,
-        this.enddate,
-        required this.description,
-        required this.images,
-        required this.uploadBy,
-        required this.createdAt,
-        required this.updatedAt,
-        required this.v,
-    });
-
-    factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["_id"],
-        title: json["title"],
-        address: json["address"],
-        category: json["category"],
-        startdate: DateTime.parse(json["startdate"]),
-        enddate: json["enddate"] == null ? null : DateTime.parse(json["enddate"]),
-        description: json["description"],
-        images: json["images"],
-        uploadBy: UploadBy.fromJson(json["uploadBy"]),
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        v: json["__v"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "_id": id,
-        "title": title,
-        "address": address,
-        "category": category,
-        "startdate": startdate.toIso8601String(),
-        "enddate": enddate?.toIso8601String(),
-        "description": description,
-        "images": images,
-        "uploadBy": uploadBy.toJson(),
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "__v": v,
-    };
-}
-
-class UploadBy {
-    String id;
-    String firstname;
-    String lastname;
-    String phone;
-    String email;
-    String address;
-    String path;
-    String organization;
-    String position;
-    String role;
-    DateTime dob;
-    String gender;
-    String password;
-    DateTime createdAt;
-    DateTime updatedAt;
-    int v;
-
-    UploadBy({
-        required this.id,
-        required this.firstname,
-        required this.lastname,
-        required this.phone,
-        required this.email,
-        required this.address,
-        required this.path,
-        required this.organization,
-        required this.position,
-        required this.role,
-        required this.dob,
+    Movie({
         required this.gender,
-        required this.password,
-        required this.createdAt,
-        required this.updatedAt,
-        required this.v,
+        required this.name,
+        required this.location,
+        required this.email,
+        required this.login,
+        required this.dob,
+        required this.registered,
+        required this.phone,
+        required this.cell,
+        required this.id,
+        required this.picture,
+        required this.nat,
     });
 
-    factory UploadBy.fromJson(Map<String, dynamic> json) => UploadBy(
-        id: json["_id"],
-        firstname: json["firstname"],
-        lastname: json["lastname"],
-        phone: json["phone"],
+    factory Movie.fromJson(Map<String, dynamic> json) => Movie(
+        gender: genderValues.map[json["gender"]]!,
+        name: Name.fromJson(json["name"]),
+        location: Location.fromJson(json["location"]),
         email: json["email"],
-        address: json["address"],
-        path: json["path"],
-        organization: json["organization"],
-        position: json["position"],
-        role: json["role"],
-        dob: DateTime.parse(json["dob"]),
-        gender: json["gender"],
-        password: json["password"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        v: json["__v"],
+        login: Login.fromJson(json["login"]),
+        dob: Dob.fromJson(json["dob"]),
+        registered: Dob.fromJson(json["registered"]),
+        phone: json["phone"],
+        cell: json["cell"],
+        id: Id.fromJson(json["id"]),
+        picture: Picture.fromJson(json["picture"]),
+        nat: json["nat"],
     );
 
     Map<String, dynamic> toJson() => {
-        "_id": id,
-        "firstname": firstname,
-        "lastname": lastname,
-        "phone": phone,
+        "gender": genderValues.reverse[gender],
+        "name": name.toJson(),
+        "location": location.toJson(),
         "email": email,
-        "address": address,
-        "path": path,
-        "organization": organization,
-        "position": position,
-        "role": role,
-        "dob": dob.toIso8601String(),
-        "gender": gender,
-        "password": password,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "__v": v,
+        "login": login.toJson(),
+        "dob": dob.toJson(),
+        "registered": registered.toJson(),
+        "phone": phone,
+        "cell": cell,
+        "id": id.toJson(),
+        "picture": picture.toJson(),
+        "nat": nat,
     };
+}
+
+class Dob {
+    final DateTime date;
+    final int age;
+
+    Dob({
+        required this.date,
+        required this.age,
+    });
+
+    factory Dob.fromJson(Map<String, dynamic> json) => Dob(
+        date: DateTime.parse(json["date"]),
+        age: json["age"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "date": date.toIso8601String(),
+        "age": age,
+    };
+}
+
+enum Gender {
+    FEMALE,
+    MALE
+}
+
+final genderValues = EnumValues({
+    "female": Gender.FEMALE,
+    "male": Gender.MALE
+});
+
+class Id {
+    final String name;
+    final String value;
+
+    Id({
+        required this.name,
+        required this.value,
+    });
+
+    factory Id.fromJson(Map<String, dynamic> json) => Id(
+        name: json["name"],
+        value: json["value"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "name": name,
+        "value": value,
+    };
+}
+
+class Location {
+    final Street street;
+    final String city;
+    final String state;
+    final String country;
+    final dynamic postcode;
+    final Coordinates coordinates;
+    final Timezone timezone;
+
+    Location({
+        required this.street,
+        required this.city,
+        required this.state,
+        required this.country,
+        required this.postcode,
+        required this.coordinates,
+        required this.timezone,
+    });
+
+    factory Location.fromJson(Map<String, dynamic> json) => Location(
+        street: Street.fromJson(json["street"]),
+        city: json["city"],
+        state: json["state"],
+        country: json["country"],
+        postcode: json["postcode"],
+        coordinates: Coordinates.fromJson(json["coordinates"]),
+        timezone: Timezone.fromJson(json["timezone"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "street": street.toJson(),
+        "city": city,
+        "state": state,
+        "country": country,
+        "postcode": postcode,
+        "coordinates": coordinates.toJson(),
+        "timezone": timezone.toJson(),
+    };
+}
+
+class Coordinates {
+    final String latitude;
+    final String longitude;
+
+    Coordinates({
+        required this.latitude,
+        required this.longitude,
+    });
+
+    factory Coordinates.fromJson(Map<String, dynamic> json) => Coordinates(
+        latitude: json["latitude"],
+        longitude: json["longitude"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "latitude": latitude,
+        "longitude": longitude,
+    };
+}
+
+class Street {
+    final int number;
+    final String name;
+
+    Street({
+        required this.number,
+        required this.name,
+    });
+
+    factory Street.fromJson(Map<String, dynamic> json) => Street(
+        number: json["number"],
+        name: json["name"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "number": number,
+        "name": name,
+    };
+}
+
+class Timezone {
+    final String offset;
+    final String description;
+
+    Timezone({
+        required this.offset,
+        required this.description,
+    });
+
+    factory Timezone.fromJson(Map<String, dynamic> json) => Timezone(
+        offset: json["offset"],
+        description: json["description"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "offset": offset,
+        "description": description,
+    };
+}
+
+class Login {
+    final String uuid;
+    final String username;
+    final String password;
+    final String salt;
+    final String md5;
+    final String sha1;
+    final String sha256;
+
+    Login({
+        required this.uuid,
+        required this.username,
+        required this.password,
+        required this.salt,
+        required this.md5,
+        required this.sha1,
+        required this.sha256,
+    });
+
+    factory Login.fromJson(Map<String, dynamic> json) => Login(
+        uuid: json["uuid"],
+        username: json["username"],
+        password: json["password"],
+        salt: json["salt"],
+        md5: json["md5"],
+        sha1: json["sha1"],
+        sha256: json["sha256"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "uuid": uuid,
+        "username": username,
+        "password": password,
+        "salt": salt,
+        "md5": md5,
+        "sha1": sha1,
+        "sha256": sha256,
+    };
+}
+
+class Name {
+    final String title;
+    final String first;
+    final String last;
+
+    Name({
+        required this.title,
+        required this.first,
+        required this.last,
+    });
+
+    factory Name.fromJson(Map<String, dynamic> json) => Name(
+        title: json["title"],
+        first: json["first"],
+        last: json["last"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "title": title,
+        "first": first,
+        "last": last,
+    };
+}
+
+class Picture {
+    final String large;
+    final String medium;
+    final String thumbnail;
+
+    Picture({
+        required this.large,
+        required this.medium,
+        required this.thumbnail,
+    });
+
+    factory Picture.fromJson(Map<String, dynamic> json) => Picture(
+        large: json["large"],
+        medium: json["medium"],
+        thumbnail: json["thumbnail"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "large": large,
+        "medium": medium,
+        "thumbnail": thumbnail,
+    };
+}
+
+class EnumValues<T> {
+    Map<String, T> map;
+    late Map<T, String> reverseMap;
+
+    EnumValues(this.map);
+
+    Map<T, String> get reverse {
+            reverseMap = map.map((k, v) => MapEntry(v, k));
+            return reverseMap;
+    }
 }
