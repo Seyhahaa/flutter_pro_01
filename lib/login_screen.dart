@@ -131,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildEmailTextField() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Colors.pink,
@@ -155,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buidTextButton(Color color) {
-    return Container(
+    return SizedBox(
       width: 300,
       height: 50,
       child: TextButton(
@@ -164,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
           side: BorderSide(color: color),
         ),
         onPressed: () {},
-        child: Text("Login"),
+        child: const Text("Login"),
       ),
     );
   }

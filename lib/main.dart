@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card/counter_logic.dart';
 import 'package:flutter_card/language_logic.dart';
-import 'package:flutter_card/login_module.dart/login_provider.dart';
 import 'package:flutter_card/login_screen.dart';
 import 'package:flutter_card/theme_logic.dart';
+import 'package:flutter_card/xampp/item_provider.dart';
+import 'package:flutter_card/xampp/picker_app.dart';
 import 'package:provider/provider.dart';
 
 void main(){
-  runApp(loginProvider());
+  runApp(const PickerApp());
 }
 
 Widget providerBasicApp(){
@@ -16,7 +17,7 @@ Widget providerBasicApp(){
     ChangeNotifierProvider(create: (context) => ThemesLogic()),
     ChangeNotifierProvider(create: (context) => LanguageLogic(),)
   ],
-    child: MyApp(),
+    child: const MyApp(),
   );
 }
 class MyApp extends StatefulWidget {
